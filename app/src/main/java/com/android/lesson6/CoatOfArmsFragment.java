@@ -1,26 +1,23 @@
 package com.android.lesson6;
 
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
+// фрагмент для просмотра герба
 public class CoatOfArmsFragment extends Fragment {
 
     static final String ARG_INDEX = "index";
-    private int index;
+    private Notes notes;
 
-    public static CoatOfArmsFragment newInstance(int index) {
+    public static CoatOfArmsFragment newInstance(Notes notes) {
         CoatOfArmsFragment f = new CoatOfArmsFragment();    // создание
         // Передача параметра
         Bundle args = new Bundle();
-        args.putInt(ARG_INDEX, index);
+        args.putParcelable(ARG_INDEX, notes);
         f.setArguments(args);
         return f;
     }
@@ -29,7 +26,7 @@ public class CoatOfArmsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            index = getArguments().getInt(ARG_INDEX);
+            notes = getArguments().getParcelable(ARG_INDEX);
         }
     }
 
@@ -37,16 +34,19 @@ public class CoatOfArmsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_coat_of_arms, container, false);
+        View view = inflater.inflate(R.layout.fragment_coat_of_arms, container, false);
+        AppCompatTextView appCompatTextView = view.findViewById(R.id.coat_of_arms);
+        appCompatTextView.setText(notes.message);
+        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        AppCompatImageView imageCoatOfArms = view.findViewById(R.id.coat_of_arms);
-        // Получить из ресурсов массив указателей на изображения гербов
-        TypedArray images = getResources().obtainTypedArray(R.array.coat_of_arms_imgs);
-        // Выбрать по индексу подходящий
-        imageCoatOfArms.setImageResource(images.getResourceId(index, -1));
-    }
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        AppCompatTextView appCompatTextView = view.findViewById(R.id.coat_of_arms);
+//        // Получить из ресурсов массив указателей на изображения гербов
+//        TypedArray images = getResources().obtainTypedArray(R.array.messages_text);
+//        // Выбрать по индексу подходящий
+//        appCompatTextView.setText(images.getResourceId(index, -1));
+//    }
 }

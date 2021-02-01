@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,47 +18,25 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.ArrayList;
+
 public class CitiesFragment extends Fragment {
+//    фрагмент для просмотра списка городов
 
     private boolean isLandscape;
-
-    public CitiesFragment() {
-        // Required empty public constructor
-    }
-
-    public static CitiesFragment newInstance(String param1, String param2) {
-        CitiesFragment fragment = new CitiesFragment();
-        Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        */
-        fragment.setArguments(args);
-        return fragment;
-    }
+    static final String ARG_INDEX = "index";
 
     // activity создана, можно к ней обращаться. Выполним начальные действия
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+//        Notes notes = savedInstanceState.getParcelable(ARG_INDEX);
         // Определение, можно ли будет расположить рядом герб в другом фрагменте
         isLandscape = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
-
         // Если можно нарисовать рядом герб, то сделаем это
         if (isLandscape) {
-            showLandCoatOfArms(0);
-        }
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-    /*        mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-    */
+//            showLandCoatOfArms(notes);
         }
     }
 
@@ -76,38 +55,42 @@ public class CitiesFragment extends Fragment {
 
     private void initList(View view) {
         LinearLayout layoutView = (LinearLayout) view;
-        String[] cities = getResources().getStringArray(R.array.cities);
+        String[] titles = getResources().getStringArray(R.array.titles);
+        String[] messages = getResources().getStringArray(R.array.messages_text);
 
         // В этом цикле создаём элемент TextView,
         // заполняем его значениями,
         // и добавляем на экран.
         // Кроме того, создаём обработку касания на элемент
         Context context = getContext();
-        for (int i = 0; i < cities.length; i++) {
+        ArrayList<Notes> notesArrayList = new ArrayList<>();
+        for (int i = 0; i < titles.length; i++) {
             if (context != null) {
-                String city = cities[i];
+                Notes notes = new Notes(titles[i], messages[i]);
+                notesArrayList.add(i, notes);
                 TextView textView = new TextView(context);
-                textView.setText(city);
+                textView.setText(titles[i]);
                 textView.setTextSize(30);
                 layoutView.addView(textView);
                 final int fi = i;
-                textView.setOnClickListener(v -> showCoatOfArms(fi));
+                textView.setOnClickListener(v -> showCoatOfArms(notes));
             }
         }
     }
 
-    private void showCoatOfArms(int index) {
+    private void showCoatOfArms(Notes notes) {
         if (isLandscape) {
-            showLandCoatOfArms(index);
+            showLandCoatOfArms(notes);
         } else {
-            showPortCoatOfArms(index);
+            showPortCoatOfArms(notes);
+            Log.d("KEY", "выбор элемента index" + notes.title);
         }
     }
 
     // Показать герб в ландшафтной ориентации
-    private void showLandCoatOfArms(int index) {
+    private void showLandCoatOfArms(Notes notes) {
         // Создаём новый фрагмент с текущей позицией для вывода герба
-        CoatOfArmsFragment detail = CoatOfArmsFragment.newInstance(index);
+        CoatOfArmsFragment detail = CoatOfArmsFragment.newInstance(notes);
 
         // Выполняем транзакцию по замене фрагмента
         FragmentActivity context = getActivity();
@@ -115,20 +98,21 @@ public class CitiesFragment extends Fragment {
             FragmentManager fragmentManager = context.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.coat_of_arms, detail);  // замена фрагмента
-            //fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
         }
     }
 
     // Показать герб в портретной ориентации.
-    private void showPortCoatOfArms(int index) {
+    private void showPortCoatOfArms(Notes notes) {
         // Откроем вторую activity
         Context context = getContext();
         if (context != null) {
             Intent intent = new Intent(context, CoatOfArmsActivity.class);
             // и передадим туда параметры
-            intent.putExtra(CoatOfArmsFragment.ARG_INDEX, index);
+            intent.putExtra(CoatOfArmsFragment.ARG_INDEX, notes);
             startActivity(intent);
+            Log.d("KEY", "интентом передаём index " + notes.title + " в CoatOfArmsActivity и открываем его" );
         }
     }
 }

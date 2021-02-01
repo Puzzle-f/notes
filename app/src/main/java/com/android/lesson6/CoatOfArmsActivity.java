@@ -2,10 +2,12 @@ package com.android.lesson6;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CoatOfArmsActivity extends AppCompatActivity {
+//    активити для размещения на нём фрагмента с гербом
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,7 @@ public class CoatOfArmsActivity extends AppCompatActivity {
             return;
         }
 
+//        не могу понять эту часть кода
         if (savedInstanceState == null) {
             // Если эта activity запускается первый раз (с каждым новым гербом первый раз),
             // то перенаправим параметр фрагменту
