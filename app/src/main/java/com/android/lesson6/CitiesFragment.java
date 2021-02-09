@@ -56,7 +56,6 @@ public class CitiesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cities_recycler, container, false);
-//        return inflater.inflate(R.layout.fragment_cities, container, false);
         return view;
     }
 
@@ -67,12 +66,30 @@ public class CitiesFragment extends Fragment {
         initList(view);
 
         RecyclerView notesRecyclerView = view.findViewById(R.id.recycler_view);
-//        String[] strings = getResources().getStringArray(R.array.titles);
-        AdapterRecycler adapterRecycler = new AdapterRecycler(notesArrayList);
-        notesRecyclerView.setAdapter(adapterRecycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        notesRecyclerView.setLayoutManager(linearLayoutManager);
+        initRecyclerView(notesRecyclerView, notesArrayList);
     }
+
+    private void initRecyclerView(RecyclerView recyclerView, ArrayList<Note> notesArrayList){
+
+        // Эта установка служит для повышения производительности системы
+        recyclerView.setHasFixedSize(true);
+
+        // Будем работать со встроенным менеджером
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Установим адаптер
+        final AdapterRecycler adapter = new AdapterRecycler(notesArrayList);
+        recyclerView.setAdapter(adapter);
+
+        // Установим слушателя
+        adapter.SetOnItemClickListener((view, position) -> {
+            showCoatOfArms(notesArrayList.get(position));
+            Log.d("KEY", "жмакаем" + notesArrayList.get(position).title);
+        });
+
+    }
+
 
     private void initList(View view) {
         String[] titles = getResources().getStringArray(R.array.titles);
@@ -131,8 +148,8 @@ public class CitiesFragment extends Fragment {
             showLandCoatOfArms(notes);
         } else {
             showPortCoatOfArms(notes);
-            Log.d("KEY", "выбор элемента index" + notes.title);
         }
+        Log.d("KEY", "выбор элемента index" + notes.title);
     }
 
     // Показать содержание заметки в ландшафтной ориентации
