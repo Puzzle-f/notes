@@ -8,4 +8,8 @@
     <string name="main">main</string>
     <string name="favorite">favorite</string>
     <string name="search">search</string>
+    <string name="delete_note">delete</string>
+    <string name="share">share</string>
+    <string name="navigation_drawer_open">navigation_drawer_open</string>
+    <string name="navigation_drawer_close">navigation_drawer_close</string>
 </resources>

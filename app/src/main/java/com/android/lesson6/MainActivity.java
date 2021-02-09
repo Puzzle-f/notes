@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,30 +27,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initButton();
-        initToolbar();
+        initMenus();
     }
 
     // инициилизируем сам тулбар
-    private void initToolbar() {
+    private void initMenus() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initDrawer(toolbar);
     }
 
-//    инициилизируем (вешаем слушателя) на кнопки тулбара
-//    пока не разобрадся
+    //    инициилизация бокового меню
+    private void initDrawer(Toolbar toolbar) {
+        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+//        класс следит за открытием и закрытием бокового меню drawerLayout а так же добаляет гамбургер меню
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        switch (id){
-//            case R.id.action_settings:
-//                addFragment(new FragmentCreatingNote());
-//                return true;
-//            case R.id.action_main:
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+//        обработка кнопок бокового меню
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            String name = item.toString();
+            System.out.println(name);
+            Toast.makeText(MainActivity.this, name, Toast.LENGTH_SHORT).show();
+            return true;
+        });
+    }
 
     //    инициилизация меню поиска в тулбаре
     @Override

@@ -3,30 +3,30 @@ package com.android.lesson6;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Notes implements Parcelable {
+public class Note implements Parcelable {
 
-    String title;
+    public String title;
     String message;
 
-    public Notes(String title, String message){
+    public Note(String title, String message){
         this.message = message;
         this.title = title;
     }
 
-    protected Notes(Parcel in) {
+    protected Note(Parcel in) {
         title = in.readString();
         message = in.readString();
     }
 
-    public static final Creator<Notes> CREATOR = new Creator<Notes>() {
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
         @Override
-        public Notes createFromParcel(Parcel in) {
-            return new Notes(in);
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
         }
 
         @Override
-        public Notes[] newArray(int size) {
-            return new Notes[size];
+        public Note[] newArray(int size) {
+            return new Note[size];
         }
     };
 

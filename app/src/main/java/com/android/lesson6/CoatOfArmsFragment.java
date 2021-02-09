@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 public class CoatOfArmsFragment extends Fragment {
 
     static final String ARG_INDEX = "index";
-    private Notes notes;
+    private Note notes;
 
-    public static CoatOfArmsFragment newInstance(Notes notes) {
+    public static CoatOfArmsFragment newInstance(Note notes) {
         CoatOfArmsFragment f = new CoatOfArmsFragment();    // создание
         // Передача параметра
         Bundle args = new Bundle();

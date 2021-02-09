@@ -2,8 +2,6 @@ package com.android.lesson6;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CoatOfArmsActivity extends AppCompatActivity {

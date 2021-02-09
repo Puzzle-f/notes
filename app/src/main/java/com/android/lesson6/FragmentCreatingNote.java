@@ -49,13 +49,4 @@ public class FragmentCreatingNote extends Fragment {
 //        TextInputEditText textInputEditText = view.findViewById(R.id.edit_text);
         return view;
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_coat_of_arms, container, false);
-//        AppCompatTextView appCompatTextView = view.findViewById(R.id.coat_of_arms);
-//        appCompatTextView.setText(notes.message);
-//        return view;
-//    }
 }
